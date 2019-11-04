@@ -1,5 +1,118 @@
+/* COLORS */
+/* FONTS */
+/* BASIC */
+html {
+  font-size: 10px;
+}
+
+body {
+  background-color: #F0F8FF;
+}
+
 * {
   margin: 0;
   padding: 0;
+  outline: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+/* CONTENT */
+.wrapper {
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  padding: 2rem 0;
+  font-family: "Roboto Medium";
+  width: 100%;
+  max-width: 80rem;
+  background-color: #145ba1;
+}
+
+.bgTextArea {
+  margin: 0 auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 74rem;
+  background-color: #96b4d3;
+}
+
+.bgTextArea .textarea {
+  display: block;
+  outline: 0.3rem double #b0d7fd;
+  font-family: "Roboto Medium";
+  width: 100%;
+  max-width: 70rem;
+  height: 20rem;
+  margin: 0 auto;
+  padding: 1rem;
+  font-size: 2rem;
+  color: #071b2e;
+  resize: vertical;
+}
+
+.keyboard {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 75rem;
+}
+
+.keyboard .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 10px;
+}
+
+.keyboard .key {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  font-family: "Roboto Medium";
+  font-size: 18px;
+  line-height: 40px;
+  color: #145ba1;
+  background: #F0F8FF;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  -webkit-box-shadow: 1px 1px 8px rgba(4, 4, 8, 0.4);
+          box-shadow: 1px 1px 8px rgba(4, 4, 8, 0.4);
+  cursor: pointer;
+}
+
+.keyboard .key:hover, .keyboard .key:focus {
+  color: #F0F8FF;
+  background-color: #1e5b97;
+}
+
+.keyboard .key:active {
+  background-color: #754cb8;
+}
+
+.keyboard .backspace, .keyboard .capslock, .keyboard .shift-left, .keyboard .shift-right, .keyboard .enter {
+  width: 90px;
+}
+
+.keyboard .alt-left, .keyboard .alt-right, .keyboard .arrow, .keyboard .backspace, .keyboard .capslock, .keyboard .ctrl-left, .keyboard .ctrl-right, .keyboard .del, .keyboard .enter, .keyboard .shift-left, .keyboard .shift-right, .keyboard .tab, .keyboard .win {
+  font-size: 14px;
+  color: #F0F8FF;
+  font-family: "Roboto Medium";
+  background-color: rgba(4, 4, 8, 0.4);
+}
+
+.keyboard .space {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.off, .case-hidden {
+  display: none;
 }
 /*# sourceMappingURL=style.css.map */
