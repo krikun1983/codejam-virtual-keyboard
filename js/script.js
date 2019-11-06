@@ -1,3 +1,4 @@
+/*  -=== Create keyboard ===-  */
 const keyboardKeys = [
   [
     ['', 'Backquote', 'ё', 'Ё', '`', '~'],
@@ -75,53 +76,54 @@ const keyboardKeys = [
   ]
 ];
 
-/* Creat wrapper */
-let wrapper = document.createElement('div');
+/*  -=== Create wrapper ===-  */
+const wrapper = document.createElement('div');
 wrapper.className = 'wrapper';
 document.body.append(wrapper);
 
-/* Creat textaree */
-let bgTextArea = document.createElement('div');
+/*  -=== Create textaree ===-  */
+const bgTextArea = document.createElement('div');
 bgTextArea.className = 'bgTextArea';
 wrapper.append(bgTextArea);
 
-let textArea = document.createElement('textarea');
+const textArea = document.createElement('textarea');
 textArea.className = 'textarea';
 bgTextArea.append(textArea);
-textArea.setAttribute('type', 'textarea');
+// textArea.setAttribute('type', 'textarea');
+textArea.setAttribute('placeholder', 'Используя клавиатуру набирайте текст');
 textArea.focus();
 
-/* Creat keyboard */
-let keyboard = document.createElement('div');
+/*  -=== Create keyboard ===-  */ 
+const keyboard = document.createElement('div');
 keyboard.className = 'keyboard';
 wrapper.append(keyboard);
 
-/* Keyboard Language*/
+/*  -=== Keyboard Language Part I ===-  */
 if (localStorage.getItem('keyboardLang') === null) {
-  localStorage.setItem('keyboardLang', 'en');
+  localStorage.setItem('keyboardLang', 'EN');
 }
 
-/* Creat buttons*/
-let rowNumbers = [14, 15, 13, 13, 9];
+/*  -=== Create buttons ===-  */
+const rowNumbers = [14, 15, 13, 13, 9];
 for (let i = 0; i < 5; i += 1) {
-  let row = document.createElement('div');
+  const row = document.createElement('div');
   row.className = 'row';
   keyboard.append(row);
 
   for (let j = 0; j < rowNumbers[i]; j += 1) {
-    let key = document.createElement('button');
-    key.className = 'key ' + keyboardKeys[i][j][0];
+    const key = document.createElement('button');
+    key.className = `key ${keyboardKeys[i][j][0]}`;
     row.append(key);
 
-    let spanEn = document.createElement('span');
-    let spanEnUp = document.createElement('span');
-    let spanEnDown = document.createElement('span');
-    let spanRu = document.createElement('span');
-    let spanRuUp = document.createElement('span');
-    let spanRuDown = document.createElement('span');
+    const spanEn = document.createElement('span');
+    const spanEnUp = document.createElement('span');
+    const spanEnDown = document.createElement('span');
+    const spanRu = document.createElement('span');
+    const spanRuUp = document.createElement('span');
+    const spanRuDown = document.createElement('span');
 
     let [langOn, langOff] = [' on', ' off'];
-    if (localStorage.getItem('keyboardLang') === 'en') {
+    if (localStorage.getItem('keyboardLang') === 'RU') {
       langOn = ' on';
       langOff = ' off';
     } else {
@@ -152,3 +154,179 @@ for (let i = 0; i < 5; i += 1) {
     spanEnUp.insertAdjacentText('afterbegin', keyboardKeys[i][j][5]);
   }
 }
+
+/*  -=== Keyboard Language Part II ===-  */
+document.addEventListener('keydown', function(lang) {
+  if (lang.shiftKey && lang.altKey) {
+    if (localStorage.getItem('keyboardLang') === 'EN') {
+      localStorage.removeItem('keyboardLang');
+      localStorage.setItem('keyboardLang', 'RU');
+    } 
+    else {
+      localStorage.removeItem('keyboardLang');
+      localStorage.setItem('keyboardLang', 'EN');
+    }
+    keyboard.querySelectorAll('.row').forEach(row => {
+      row.querySelectorAll('.key').forEach(key => {
+        let on = key.querySelector('.on');
+        let off = key.querySelector('.off');
+        on.classList.remove('on');
+        on.classList.add('off');
+        off.classList.remove('off');
+        off.classList.add('on');
+      });
+    });
+  }
+});
+/*  -=== button Special ===-  */
+let shiftPress = false;                               
+let [altLeftPress, altRightPress] = [false, false];
+let [ctrlLeftPress, ctrlRightPress] = [false, false];
+
+function caseUp() {
+  shiftPress = true;
+    document.querySelectorAll('.on').forEach(key => {
+    key.children[0].classList.remove('case-shown');
+    key.children[0].classList.add('case-hidden');
+    key.children[1].classList.add('case-shown');
+    key.children[1].classList.remove('case-hidden');
+  });
+}
+
+function caseDown() {
+  shiftPress = false;
+  document.querySelectorAll('.on').forEach(key => {
+    key.children[0].classList.add('case-shown');
+    key.children[0].classList.remove('case-hidden');
+    key.children[1].classList.remove('case-shown');
+    key.children[1].classList.add('case-hidden');
+  });
+}
+
+function shiftUpKeyboard(lang) {
+  if (lang.shiftKey) {
+    caseUp();
+  }
+}
+
+function shiftDownKeyboard() {
+  caseDown();
+}
+
+function setCaretPosition(elem, pos) {
+  if (elem.setSelectionRange) {
+    elem.focus();
+    elem.setSelectionRange(pos, pos);
+  } else if (elem.createTextRange) {
+    let range = elem.createTextRange();
+    range.collapse(true);
+    range.moveEnd('character', pos);
+    range.moveStart('character', pos);
+    range.select();
+  }
+}
+
+function printingInTextArea(event) {
+  let symbol = '';
+  let targetBtn = event.target.closest('button');
+  if (targetBtn) {  //если true
+    let targetSpan = targetBtn.querySelector('.on');
+    let targetBtnName = targetSpan.className.split(' ')[0];
+    let specialBtn = targetBtn.classList[1];
+
+    keyboardKeys.forEach(row => {
+      row.forEach(elem => {
+        if (elem[1] === targetBtnName && (specialBtn === undefined || specialBtn === 'space' || specialBtn === 'tab' || specialBtn === 'enter')) {
+          if (localStorage.getItem('keyboardLang') === 'EN') {
+            shiftPress ? (symbol = elem[3]) : (symbol = elem[2]);
+          } else {
+            shiftPress ? (symbol = elem[5]) : (symbol = elem[4]);
+          }
+
+          // if (localStorage.getItem('keyboardLang') === 'RU' && shiftPress) {
+          //   symbol = el[3]; 
+          // } else if (localStorage.getItem('keyboardLang') === 'RU' && !shiftPress) { 
+          //   symbol = el[2];
+          // } else if (localStorage.getItem('keyboardLang') === 'EN' && shiftPress) {
+          //   symbol = el[5];
+          // } else if (localStorage.getItem('keyboardLang') === 'EN' && !shiftPress) {
+          //   symbol = el[4];
+          // }
+
+        }
+      });
+    });
+
+    if (specialBtn === 'tab') {
+      symbol = '  ';
+    }
+
+    if (specialBtn === 'enter') {
+      symbol = '\n';
+    }
+    
+    textArea.setRangeText(symbol, textArea.selectionStart, textArea.selectionEnd, 'end' );
+
+    if (specialBtn === 'backspace') {
+      if (textArea.selectionStart > 0) {
+        let pos = textArea.selectionStart;
+        textArea.value = textArea.value.slice(0, pos - 1) + textArea.value.slice(pos, textArea.value.length);
+        textArea.setRangeText('', pos - 1, pos - 1, 'end');
+      }
+    }
+
+    if (specialBtn === 'del') {
+      let pos = textArea.selectionStart;
+      if (textArea.selectionStart <= textArea.value.length) {
+        textArea.value = textArea.value.slice(0, pos) + textArea.value.slice(pos + 1, textArea.value.length);
+        textArea.setRangeText('', pos, pos, 'end');
+      }
+    }
+    let specialBtnEl = document.querySelector('.' + specialBtn);
+    if (specialBtn === 'shift-left' || specialBtn === 'shift-right' || specialBtn === 'capslock') {
+      if (shiftPress === false) {
+        specialBtnEl.classList.add('active');
+        caseUp();
+      } else {
+        specialBtnEl.classList.remove('active');
+        caseDown();
+      }
+    }
+    if (specialBtn === "arrow") {
+      let pos = textArea.selectionStart;
+
+      if (targetBtnName === "ArrowUp") {
+        if (textArea.selectionStart > 10) setCaretPosition(textArea, pos - 10);
+      } else if (targetBtnName === "ArrowRight") {
+        setCaretPosition(textArea, pos + 1);
+      } else if (targetBtnName === "ArrowDown") {
+        setCaretPosition(textArea, pos + 10);
+      } else if (targetBtnName === "ArrowLeft") {
+        if (textArea.selectionStart > 0) setCaretPosition(textArea, pos - 1);
+      }
+    }
+
+    if (specialBtn === 'alt-left') {
+      altLeftPress = activeBtnHighlighting(altLeftPress, specialBtnEl);
+    }
+
+    if (specialBtn === 'alt-right') {
+      altRightPress = activeBtnHighlighting(altRightPress, specialBtnEl);
+    }
+
+    if (specialBtn === 'ctrl-left') {
+      ctrlLeftPress = activeBtnHighlighting(ctrlLeftPress, specialBtnEl);
+    }
+
+    if (specialBtn === 'ctrl-right') {
+      ctrlRightPress = activeBtnHighlighting(ctrlRightPress, specialBtnEl);
+    }
+  }
+  textArea.focus();
+}
+
+
+document.addEventListener('keydown', shiftUpKeyboard);
+keyboard.addEventListener('click', printingInTextArea);
+document.addEventListener('keyup', shiftDownKeyboard);
+
