@@ -1,0 +1,100 @@
+@import 'variables';
+/* BASIC */
+html {
+  font-size: 10px;
+}
+
+body {
+  background-color: $bg-color;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* CONTENT */
+.wrapper {
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  padding: 2rem 0;
+  font-family: $main-font;
+  width: 100%;
+  max-width: 80rem;
+  background-color: $wrapper;
+}
+
+.bgTextArea {
+  margin: 0 auto;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 74rem;
+  background-color: $bgTextArea;
+  .textarea {
+    display: block;
+    outline: 0.3rem double $textarea-bgColor;
+    font-family: $main-font;
+    width: 100%;
+    max-width: 70rem;
+    height: 20rem;
+    margin: 0 auto;
+    padding: 1rem;
+    font-size: 2rem;
+    color: $textarea-color;
+    resize: vertical;
+  }
+}
+
+.keyboard {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 75rem;
+  .row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+  }
+  .key {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+    font-family: $main-font;
+    font-size: 18px;
+    line-height: 40px;
+    color: $wrapper;
+    background: $bg-color;
+    border: 1px solid $key-border;
+    border-radius: 4px;
+    box-shadow: 1px 1px 8px $key-shadow;
+    cursor: pointer;
+  }
+  .key:hover, .key:focus {
+    color: $bg-color;
+    background-color: $key-hover;
+  }
+  .key:active {
+    background-color: $key-active;
+  }
+  .backspace, .capslock, .shift-left, .shift-right, .enter {
+    width: 90px;
+  }
+  .alt-left, .alt-right, .arrow, .backspace, .capslock, .ctrl-left, .ctrl-right, .del, .enter, .shift-left, .shift-right, .tab, .win {
+    font-size: 14px;
+    color: $bg-color;
+    font-family: $main-font;
+    background-color: $key-shadow;
+  }
+  .space {
+    flex-grow: 1;
+  }
+}
+
+.off, .case-hidden {
+  display: none;
+}
